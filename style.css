@@ -1,0 +1,314 @@
+/* --- 通用基礎樣式 (Base Styles) --- */
+
+:root {
+    --primary-color: #007bff; /* 主藍色 (報名按鈕) */
+    --success-color: #28a745; /* 成功綠色 (報名成功/重要行動) */
+    --warning-color: #ffc107; /* 提醒黃色 */
+    --danger-color: #dc3545; /* 錯誤紅色 (管理員登入警告) */
+    --light-bg: #f8f9fa; /* 淺背景 */
+    --dark-text: #343a40; /* 深色文字 */
+    --border-color: #dee2e6;
+    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: '微軟正黑體', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 0;
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 90%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+}
+
+h1, h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+/* --- 按鈕通用樣式 (Button General) --- */
+
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+.btn-success:hover {
+    background-color: #1e7e34;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+}
+
+/* --- 報名首頁樣式 (index.html) --- */
+
+.admin-link {
+    float: right;
+    text-decoration: none;
+    color: var(--dark-text);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    display: block;
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.slot-list {
+    list-style: none;
+    padding: 0;
+}
+
+.slot-item {
+    background-color: var(--light-bg);
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid var(--primary-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.slot-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.slot-info {
+    text-align: left;
+}
+.slot-date {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: block;
+}
+.slot-name {
+    font-size: 1em;
+    color: #6c757d;
+    display: block;
+}
+
+/* --- 報名表單樣式 (signup_form.html) --- */
+
+.form-box {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--dark-text);
+    font-size: 1.1em;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: var(--danger-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    font-weight: bold;
+}
+
+/* --- 報名成功頁面樣式 (success.html) --- */
+
+.success-message {
+    text-align: center;
+    padding: 40px;
+    margin-top: 50px;
+    border: 2px solid var(--success-color);
+    border-radius: 10px;
+    background-color: #e9f7ef;
+}
+.success-message h2 {
+    color: var(--success-color);
+}
+.success-message p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+/* --- 管理員登入頁面樣式 (admin_login.html) --- */
+
+.login-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    margin: auto;
+}
+.login-box h2 {
+    color: var(--danger-color); 
+    border-bottom: 3px solid var(--danger-color);
+}
+
+.login-box .btn-primary {
+    background-color: var(--danger-color);
+}
+.login-box .btn-primary:hover {
+    background-color: #c82333;
+}
+
+/* --- 管理員後台樣式 (admin_dashboard.html) --- */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.logout-btn {
+    text-decoration: none;
+    color: var(--danger-color);
+    font-weight: bold;
+    padding: 8px 15px;
+    border: 1px solid var(--danger-color);
+    border-radius: 5px;
+}
+
+/* NEW: 新增 table-container 來實現水平滾動 */
+.table-container { 
+    overflow-x: auto;
+    margin-top: 20px; 
+}
+
+.data-table {
+    width: 100%;
+    min-width: 500px; /* 確保在小螢幕上表格內容不會擠壓太小 */
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+    white-space: nowrap; /* 防止表格內容換行，確保水平滾動 */
+}
+
+.data-table th {
+    background-color: #e9ecef;
+    color: var(--dark-text);
+    font-weight: bold;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* 確保輸入框樣式統一 */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+/* 確保 :focus 樣式也同時適用 */
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- 手機版適應性 (Mobile Responsiveness) --- */
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+    
+    /* 調整首頁 slot-item 佈局 */
+    .slot-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+    .slot-info {
+        margin-bottom: 15px; 
+    }
+    .slot-item .btn { 
+        width: 100%; /* 讓按鈕佔滿一行 */
+        padding: 10px;
+    }
+    
+    .admin-link {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 0.8em;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-top: 40px; 
+    }
+}
+
+@media screen {
+    
+}
