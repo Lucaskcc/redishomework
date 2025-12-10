@@ -41,6 +41,16 @@
         .slot-name {
             color: #343a40;
         }
+        .slot-capacity {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .slot-capacity.full {
+            color: #dc3545; 
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -52,21 +62,39 @@
         <h1 class="text-center text-primary mb-4">📢 清潔人員報班系統</h1>
         <p class="text-center text-secondary">請點選您想報名的班別，輸入資料即可完成報名。</p>
         
+        {% if not slots %}
+            <div class="alert alert-warning text-center" role="alert">
+                目前沒有任何開放報名的班別。
+            </div>
+        {% else %}
         <ul class="list-unstyled mt-4">
             {% for slot in slots %}
             <li class="slot-item">
                 <div class="slot-info d-flex align-items-center">
-                    <span class="slot-date">{{ slot[0] }}</span> 
-                    <span class="slot-name">({{ slot[1] }})</span>
-                </div>
-                <a href="{{ url_for('signup', slot_id=slot[2]) }}" class="btn btn-success btn-sm mt-sm-0 mt-2">點此報名</a>
-            </li>
-            {% else %}
-            <li class="text-center text-muted p-3 border rounded">
-                目前沒有任何開放報名的班別。
+                    <span class="slot-date">{{ slot.work_date }}</span> 
+                    <span class="slot-name">{{ slot.slot_name }}</span>
+                    
+                    {% set is_full = slot.current_bookings >= slot.capacity %}
+                    <span class="slot-capacity {% if is_full %}full{% endif %}">
+                        ({{ slot.current_bookings }} / {{ slot.capacity }})
+                    </span>
+                    </div>
+                
+                {% if is_full %}
+                <button class="btn btn-secondary btn-sm" disabled>人數已滿</button>
+                {% else %}
+                <a href="{{ url_for('signup', slot_id=slot.id) }}" class="btn btn-primary btn-sm">立即報名</a>
+                {% endif %}
+                
             </li>
             {% endfor %}
         </ul>
-    </div>
+        {% endif %}
+        
+        <div class="text-center mt-5 pt-3 border-top">
+            <p class="text-muted mb-2">我是新員工，尚未註冊資料？</p>
+            <a href="{{ url_for('new_employee') }}" class="btn btn-outline-success">👤 我是新人，註冊員工資料</a>
+        </div>
+        </div>
 </body>
 </html>

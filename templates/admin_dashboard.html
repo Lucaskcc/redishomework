@@ -33,38 +33,59 @@
 <body class="bg-light">
     <div class="container bg-white p-4 rounded shadow">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-primary">🛠️ 管理儀表板</h1>
+            <h1 class="text-primary mb-0">🛠️ 後台管理儀表板</h1>
             <div>
-                <a href="{{ url_for('admin_new_slot') }}" class="btn btn-success me-2">新增班別</a>
-                <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger">登出 ({{ session.username }})</a>
+                <a href="{{ url_for('admin_add_slot') }}" class="btn btn-success me-2">🆕 新增班別</a>
+                <a class="btn btn-sm btn-outline-secondary me-2" href="{{ url_for('admin_account') }}">
+                    👤 帳號 ({{ user_role | upper }})
+                </a>
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-danger">登出</a>
             </div>
         </div>
 
-        {% for slot in slots %}
-        <div class="slot-section">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                {% set status_class = 'open' if slot.is_open and slot.count < slot.capacity else ('closed' if not slot.is_open else 'full') %}
-                {% set status_text = '開放報名' if slot.is_open and slot.count < slot.capacity else ('已關閉' if not slot.is_open else '名額已滿') %}
-                <span class="status-badge {{ status_class }}">{{ status_text }}</span>
+        {% if user_role != 'super' %}
+        <div class="alert alert-warning text-center">
+            您目前是 **查看者 (VIEWER)** 權限，無法進行新增、編輯或刪除操作。
+        </div>
+        {% endif %}
 
-                <h3 class="h5 mb-0 text-dark me-auto">
-                    {{ slot.work_date }} - {{ slot.slot_name }}
+        {% for slot in slots %}
+        <div class="slot-section shadow-sm">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                
+                <h3 class="mb-0">
+                    <span class="text-secondary">{{ slot.work_date }}</span> - <strong class="text-dark">{{ slot.slot_name }}</strong>
                 </h3>
                 
-                <div class="btn-group">
-                    <a href="{{ url_for('admin_view_bookings', slot_id=slot.id) }}" class="btn btn-info btn-sm">
-                        查看名單 ({{ slot.count }} / {{ slot.capacity }})
-                    </a>
-                    {% if user_role == 'super' %}
-                    <a href="{{ url_for('admin_edit_slot', slot_id=slot.id) }}" class="btn btn-warning btn-sm">編輯/刪除</a>
+                <div class="text-end">
+                    {% set status = '開放中' if slot.is_open else '已關閉' %}
+                    {% set badge_class = 'open' if slot.is_open else 'closed' %}
+                    {% set is_full = slot.current_bookings >= slot.capacity %}
+
+                    {% if is_full %}
+                        <span class="status-badge full">人數已滿</span>
+                    {% else %}
+                        <span class="status-badge {{ badge_class }}">{{ status }}</span>
                     {% endif %}
+
+                    <a href="{{ url_for('admin_edit_slot', slot_id=slot.id) }}" class="btn btn-sm btn-primary ms-3">
+                        {% if user_role == 'super' %}
+                            ✏️ 編輯
+                        {% else %}
+                            ℹ️ 查看
+                        {% endif %}
+                    </a>
                 </div>
             </div>
 
+            <p class="fs-5 fw-bold text-muted mb-2">
+                報名人數：<span class="text-dark">{{ slot.current_bookings }}</span> / {{ slot.capacity }} 人
+            </p>
+
             {% if slot.bookings %}
-                <p class="text-secondary small mb-1 mt-2">近期報名：</p>
+                <h5 class="text-primary mt-3">✅ 最新報名 (前 3 筆)</h5>
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered table-striped">
+                    <table class="table table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
                                 <th style="width: 5%;">#</th>
@@ -74,7 +95,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for person in slot.bookings %}
+                            {% for person in slot.bookings[:3] %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ person.name }}</td>
@@ -85,9 +106,11 @@
                         </tbody>
                     </table>
                 </div>
-                {% if slot.bookings | length > 3 %}
-                <p class="text-end small text-primary mb-0">...還有 {{ slot.bookings | length - 3 }} 筆報名，請點擊「查看名單」</p>
-                {% endif %}
+                <div class="text-end">
+                    <a href="{{ url_for('admin_view_bookings', slot_id=slot.id) }}" class="btn btn-sm btn-info text-white">
+                        {{ '查看完整名單' if slot.bookings | length > 3 else '查看名單' }}
+                    </a>
+                </div>
             {% else %}
                 <p class="text-muted fst-italic pt-2 mb-0">目前無人報名此班別。</p>
             {% endif %}
